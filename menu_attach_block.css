@@ -1,0 +1,25 @@
+div.messages.status.block {
+  background-image: none;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  display: inline;
+  font-size: x-small;
+  font-style: italic;
+  margin: 0 8px;
+  padding: 2px 8px;
+}
+
+#block-megamenu-megamenu-shows {
+  font-weight: 900;
+}
+
+#block-megamenu-megamenu-shows .block {
+  display: none;
+}
+
+.menu_attach_block .block {
+  display: none;
+}
