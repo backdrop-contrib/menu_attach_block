@@ -12,14 +12,11 @@ div.messages.status.block {
   padding: 2px 8px;
 }
 
-#block-megamenu-megamenu-shows {
-  font-weight: 900;
-}
-
-#block-megamenu-megamenu-shows .block {
+.menu-attach-block  {
   display: none;
-}
-
-.menu_attach_block .block {
-  display: none;
+  left: 0;
+  position: absolute;
+  top: 35px;
+  width: 100%;
+  z-index: 999;
 }

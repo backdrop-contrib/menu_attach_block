@@ -13,6 +13,8 @@ Embedded blocks will appear like this in the menu:
      </div>
   </li>
 
+Embedded blocks respect block page and permissions settings.
+
 ## Getting started
 
 * Download and install the module as usual. Check here
@@ -25,3 +27,4 @@ Embedded blocks will appear like this in the menu:
   * If you want to replace the menu link entirely, set <block> as the path.
 
 The block will now appear in your menu.
+
