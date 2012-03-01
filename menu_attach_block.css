@@ -31,7 +31,7 @@ div.messages.status.block {
 
 .menu-attach-block-drop-link,
 #navigation li a.menu-attach-block-drop-link  {
-    background: transparent url("arrows.png") no-repeat scroll 5px -1620px;
+    background: transparent url("/misc/arrow-asc.png") no-repeat scroll;
     height: 100%;
     margin: 0;
     padding: 0 9px;
@@ -40,7 +40,7 @@ div.messages.status.block {
 }
 
 #navigation li.dropped a.menu-attach-block-drop-link  {
-    background-position: 5px -1937px;
+    background-image: url("/misc/arrow-desc.png");
     height: 100%;
     margin: 0;
     padding: 0 9px;
