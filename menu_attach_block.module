@@ -7,11 +7,10 @@
  * This allows an admin to select a block for a menu item as well as, or
  * instead of, a title and link. When the link is rendered, the block is
  * inserted in the containing element after the <a> tag.
+ * 
+ *  Based heavily on menu_views.module.
  *
- * @todo Big todo - I need to work out a way to have block attachments respect
- * page and visiblity settings without worrying about theme regions. 
- *
- *  Based heavily on menu_views.module @see http://drupal.org/project/menu_views
+ * @link http://drupal.org/project/menu_views @endlink
  */
 
 /**
@@ -220,7 +219,6 @@ function menu_attach_block_menu_edit_item_submit($form, &$form_state) {
     $values['options']['menu_attach_block'] = $values['menu_attach_block'];
   }
 
-  // Blocks need to be set to 'enabled' to be loaded by _block_load_blocks().
   $block = menu_attach_block_load_from_key($values['menu_attach_block']['name']);
   //menu_attach_block_save_block($block);
   unset($values['menu_attach_block']);
