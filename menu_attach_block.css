@@ -20,3 +20,36 @@ div.messages.status.block {
   width: 100%;
   z-index: 999;
 }
+
+#navigation li.attached-block a {
+  display: inline-block;
+}
+#navigation li.attached-block a.attached-block {
+  border-right: 1px solid #927C89;
+}
+
+
+.menu-attach-block-drop-link,
+#navigation li a.menu-attach-block-drop-link  {
+    background: transparent url("arrows.png") no-repeat scroll 5px -1620px;
+    height: 100%;
+    margin: 0;
+    padding: 0 9px;
+    text-indent: -9999em;
+    width: 3px;
+}
+
+#navigation li.dropped a.menu-attach-block-drop-link  {
+    background-position: 5px -1937px;
+    height: 100%;
+    margin: 0;
+    padding: 0 9px;
+    text-indent: -9999em;
+    width: 3px;
+}
+
+
+
+#navigation li a.menu-attach-block-drop-link:focus {
+  border: none;
+}

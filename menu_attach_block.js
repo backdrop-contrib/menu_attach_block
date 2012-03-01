@@ -2,12 +2,12 @@
   // Implement an extremely simplistic show/hide.
   Drupal.behaviors.menu_attach_block = {
     attach: function (context, settings) {
-      $('.menu-attach-block', context).siblings('a')
-        .hover(
-          function(){$(this).nextAll('.menu-attach-block').slideDown('fast');},
-          function(){$(this).nextAll('.menu-attach-block').slideUp('fast');}
-        )
+      $('a.menu-attach-block-drop-link', context).click(function(event) {
+        var link = $(this);
+        $(link).next('.menu-attach-block').slideToggle('fast');
+        $(link).parent().toggleClass('dropped');
+        event.preventDefault();
+      });
     }
-  };
-  
+  }
 }(jQuery));
