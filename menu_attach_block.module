@@ -15,17 +15,6 @@
  */
 
 /**
- * Implements hook_hook_info().
- */
-function menu_attach_block_hook_info() {
-  $hooks['form_alter'] = array(
-    'group' => 'admin',
-  );
-
-  return $hooks;
-}
-
-/**
  * Implements hook_menu().
  * 
  * @return array
@@ -114,7 +103,9 @@ function menu_attach_block_preprocess_links(&$variables) {
 
 /**
  * Implements hook_theme_registry_alter().
- * Intercept hook_link().
+ * 
+ * Intercepts hook_link().
+ * 
  * @param $registry
  * @return void
  */
@@ -236,41 +227,6 @@ function menu_attach_block_menu_edit_item_submit($form, &$form_state) {
 }
 
 /**
- * Ensures that a block assigned to a menu item has the enabled flag set.
- *
- * If the block is already assigned to a region, then it is set
- *
- * @param type $block
- *
- * @todo not used at present, queue for removal.
- */
-function menu_attach_block_save_block($block) {
-  // Filter to check settings only for available themes.
-  $themes = list_themes();
-  $themes = array_filter($themes, function($theme) {
-        return $theme->status;
-      });
-  /*
-    $theme_name = arg(0) == 'admin' ? variable_get('admin_theme') :
-    !empty($user->theme) ? $user->theme : variable_get('default_theme');
-   */
-  $query = db_select('block', 'b');
-  $query
-      ->fields('b', array('bid', 'module', 'delta', 'region', 'status'))
-      ->condition('b.module', $block['module'])
-      ->condition('b.delta', $block['delta'])
-      ->condition('b.theme', array_keys($themes), 'IN');
-
-  $result = $query->execute();
-  $enabled = TRUE;
-  foreach ($result as $block) {
-    $enabled = $enabled && $block->status;
-  }
-  // If the block is already enabled on all available themes,
-  // theres no problem.
-}
-
-/**
  * Loads a block object using a menu_attach_block key.
  * 
  * Block references are saved in the menu object in the format module|delta.
@@ -304,45 +260,6 @@ function menu_attach_block_load_from_key($key, $hook = FALSE) {
     }
   }
   return $block;
-}
-
-/**
- * Determines whether the current user has access to view a block on this page.
- *
- * @param $block
- * @return bool
- *
- * @todo - This, irritatingly, requires your block to be assigned to a region.
- *         Have to refactor so it only checks page and permissions, not region.
- */
-function _menu_attach_block_access($block) {
-  // _block_load_blocks uses the database API's tagging feature to add an alter
-  // function to the block query - ::addTag('block_list'). This means that the
-  // once the query has run hook_block_list_alter is called to modify the results.
-  // block_block_list_alter implements hook_block_list_alter, and removes any
-  // blocks from the result set if the current user does not have access to see
-  // the block on the current page.
-  // 
-  // @see block_block_list_alter()
-  // @see _block_load_blocks()1
-  // @see SelectQuery::addTag()
-  // @see hook_query_alter()
-  // Intentionally not loading by ref because we don't want to override
-  $blocks = drupal_static('block_list');
-  if (!$blocks) {
-    // @todo - We can get a list of blocks that is permissions safe but not
-    // filtered by theme region if we call block_blost_list_alter directly
-    // instead of routing through _block_load_blocks().
-    $blocks = _block_load_blocks();
-  }
-  foreach ($blocks as $region => &$allowed_blocks) {
-    foreach ($allowed_blocks as &$allowed_block) {
-      if ($allowed_block->module == $block['module'] && $allowed_block->delta == $block['delta']) {
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
 }
 
 /**
