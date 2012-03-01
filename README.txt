@@ -8,10 +8,15 @@ Embedded blocks will appear like this in the menu:
 
   <li class="menu-346 first">
     <a href="/node/1">Node</a>
+    <a href="# " class="menu-attach-block-drop-link">More</a>
       <div class="menu-attach-block">
       // block HTML goes here
      </div>
   </li>
+
+Some basic JavaScript and CSS is included, which is designed for use with
+horizontal menus. You can override the Javascript by altering
+Drupal.behaviors.menu_attach_block.
 
 Embedded blocks respect block page and permissions settings.
 
@@ -27,4 +32,3 @@ Embedded blocks respect block page and permissions settings.
   * If you want to replace the menu link entirely, set <block> as the path.
 
 The block will now appear in your menu.
-
