@@ -3,9 +3,7 @@ description = "Embed blocks into menu items."
 core = 7.x
 php = 5.3
 
-package = "Maya"
 dependencies[] = menu
-dependencies[] = views
 
 stylesheets[all][] = menu_attach_block.css
 
