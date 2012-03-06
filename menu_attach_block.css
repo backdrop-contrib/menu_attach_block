@@ -12,7 +12,7 @@ div.messages.status.block {
   padding: 2px 8px;
 }
 
-.menu-attach-block  {
+.menu-attach-block {
   display: none;
   left: 0;
   position: absolute;
@@ -25,30 +25,28 @@ div.messages.status.block {
   display: inline-block;
 }
 #navigation li.attached-block a.attached-block {
-  border-right: 1px solid #927C89;
+  border-right: 1px solid #927c89;
 }
 
 
 .menu-attach-block-drop-link,
-#navigation li a.menu-attach-block-drop-link  {
-    background: transparent url("arrow-asc.png") no-repeat scroll;
-    height: 100%;
-    margin: 0;
-    padding: 0 9px;
-    text-indent: -9999em;
-    width: 3px;
+#navigation li a.menu-attach-block-drop-link {
+  background: transparent url("arrow-asc.png") no-repeat scroll;
+  height: 100%;
+  margin: 0;
+  padding: 0 9px;
+  text-indent: -9999em;
+  width: 3px;
 }
 
-#navigation li.dropped a.menu-attach-block-drop-link  {
-    background-image: url("arrow-desc.png");
-    height: 100%;
-    margin: 0;
-    padding: 0 9px;
-    text-indent: -9999em;
-    width: 3px;
+#navigation li.dropped a.menu-attach-block-drop-link {
+  background-image: url("arrow-desc.png");
+  height: 100%;
+  margin: 0;
+  padding: 0 9px;
+  text-indent: -9999em;
+  width: 3px;
 }
-
-
 
 #navigation li a.menu-attach-block-drop-link:focus {
   border: none;
