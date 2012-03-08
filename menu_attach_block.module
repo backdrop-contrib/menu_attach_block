@@ -247,10 +247,10 @@ function menu_attach_block_load_from_key($key, $hook = FALSE) {
   }
   if ($hook) {
     // Hack for hook_block_info for blocks with numeric keys.
-    if ($hook === 'info') {
+    if ($hook === 'info' && is_numeric($block['delta'])) {
       $info = module_invoke($block['module'], 'block_info', $block['delta']);
-      list($key, $val) = each($info);
-      $block[$key] = $val;
+      $info = $info[$block['delta']];
+      $block[$block['delta']] = $info;
     }
     else {
       $block = array_merge($block, (array) module_invoke($block['module'], 'block_' . $hook, $block['delta']));
