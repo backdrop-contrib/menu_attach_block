@@ -125,7 +125,6 @@ function menu_attach_block_theme_registry_alter(&$registry) {
  * Appends the attached view to the title of the menu item.
  */
 function menu_attach_block_form_menu_overview_form_alter(&$form, &$form_state) {
-
   drupal_add_css(drupal_get_path('module', 'menu_attach_block') . '/menu_attach_block.css', array('group' => CSS_DEFAULT));
   $elements = element_children($form);
 
@@ -138,15 +137,17 @@ function menu_attach_block_form_menu_overview_form_alter(&$form, &$form_state) {
       $options = $item['options'];
       if (isset($options['menu_attach_block']) && !empty($options['menu_attach_block']['name'])) {
         $block = menu_attach_block_load_from_key($options['menu_attach_block']['name'], 'info');
-        $info = $block[$block['delta']]['info'];
-        $title = '';
-        if ($item['link_path'] != '<block>') {
-          // Manually create the link, otherwise it will be caught by
-          // menu_attach_block_link().
-          $title = '<a href="' . check_url(url($item['href'], $item['localized_options'])) . '"' . drupal_attributes($item['localized_options']['attributes']) . '>' . check_plain($item['title']) . '</a> ';
+        if ($block !== FALSE) {
+          $info = $block[$block['delta']]['info'];
+          $title = '';
+          if ($item['link_path'] != '<block>') {
+            // Manually create the link, otherwise it will be caught by
+            // menu_attach_block_link().
+            $title = '<a href="' . check_url(url($item['href'], $item['localized_options'])) . '"' . drupal_attributes($item['localized_options']['attributes']) . '>' . check_plain($item['title']) . '</a> ';
+          }
+          $link = l($info, 'admin/structure/block/manage/' . $block['module'] . '/' . $block['delta'] . '/configure');
+          $element['title']['#markup'] = $title . '<div class="messages status block">Attached block:  ' . $link . ' </div>';
         }
-        $link = l($info, 'admin/structure/block/manage/' . $block['module'] . '/' . $block['delta'] . '/configure');
-        $element['title']['#markup'] = $title . '<div class="messages status block">Attached block:  ' . $link . ' </div>';
       }
     }
   }
