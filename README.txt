@@ -9,14 +9,13 @@ Embedded blocks will appear like this in the menu:
   <li class="menu-346 first">
     <a href="/node/1">Node</a>
     <a href="# " class="menu-attach-block-drop-link">More</a>
-      <div class="menu-attach-block">
+      <div class="menu-attach-block orientation-vertical">
       // block HTML goes here
      </div>
   </li>
 
-Some basic JavaScript and CSS is included, which is designed for use with
-horizontal menus. You can override the Javascript by altering
-Drupal.behaviors.menu_attach_block.
+Some basic JavaScript and CSS is included. You can override the Javascript by
+altering Drupal.behaviors.menu_attach_block.
 
 Embedded blocks respect block page and permissions settings.
 
@@ -30,5 +29,8 @@ Embedded blocks respect block page and permissions settings.
 * Click 'Edit' on the menu item you want to attach a block to.
 * Select a block in the 'Attach Block' fieldset.
   * If you want to replace the menu link entirely, set <block> as the path.
+* You may also choose an orientation for the parent menu. This effects how 
+  blocks are shown. Choose horizontal for horizontal navigation bars, and
+  vertical for sidebar navigation.
 
 The block will now appear in your menu.

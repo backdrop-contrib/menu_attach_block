@@ -61,18 +61,20 @@ function menu_attach_block_link(&$variables) {
       );
       // Pass a space as the fragment parameter to get a <a href='# '> link.
       // @link http://bit.ly/zZXArS @endlink
-      $options = array(
+      $l_options = array(
         'fragment' => ' ',
         'external' => TRUE,
         'attributes' => $attributes,
       );
-      $link .= PHP_EOL . l(t('More'), '', $options);
+      $link .= PHP_EOL . l(t('More'), '', $l_options);
     }
     // Get the block html.
     $block_output = menu_attach_block_block_render($block['module'], $block['delta']);
     if (!empty($block_output)) {
       // @todo Make a proper theme function.
-      $block_output = '<div class="menu-attach-block">' . PHP_EOL . $block_output . PHP_EOL . '</div>';
+      dpm($options);
+      $class = 'menu-attach-block orientation-' . $options['menu_attach_block']['orientation'];
+      $block_output = '<div class="' . $class . '">' . PHP_EOL . $block_output . PHP_EOL . '</div>';
       return $link . $block_output;
     }
   }
@@ -92,6 +94,7 @@ function menu_attach_block_preprocess_links(&$variables) {
     foreach ($variables['links'] as $key => &$link) {
       if (array_key_exists('menu_attach_block', $link)) {
         $attached_block = TRUE;
+        
         $link['attributes']['class'][] = 'attached-block';
         // Rebuild the keys of the array, preserving the order. Array keys are
         // used for keys in the li element of link lists - @see theme_links.
@@ -189,9 +192,18 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
     '#default_value' => isset($form['options']['#value']['menu_attach_block']['name']) ? $form['options']['#value']['menu_attach_block']['name'] : '',
     '#options' => $options,
   );
+
+  $form['options']['menu_attach_block']['orientation'] = array(
+    '#type' => 'select',
+    '#title' => t('Menu orientation'),
+    '#default_value' => isset($form['options']['#value']['menu_attach_block']['name']) ? $form['options']['#value']['menu_attach_block']['name'] : 'horizontal',
+    '#options' => array('horizontal' => t('Horizontal'), 'vertical' => t('Vertical')),
+  );
   // Inject handlers.
   $form['#validate'] = array_merge(array('menu_attach_block_menu_edit_item_validate'), $form['#validate']);
   $form['#submit'] = array_merge(array('menu_attach_block_menu_edit_item_submit'), $form['#submit']);
+
+  dpm($form, 'form');
 }
 
 /**
@@ -214,13 +226,13 @@ function menu_attach_block_menu_edit_item_validate($form, &$form_state) {
 function menu_attach_block_menu_edit_item_submit($form, &$form_state) {
   // Save menu_attach_blocks values in the links options.
   $values = &$form_state['values'];
+
   if (isset($values['menu_attach_block'])) {
     $values['menu_attach_block']['mlid'] = $values['original_item']['mlid'];
     $values['menu_attach_block']['plid'] = $values['original_item']['plid'];
     $values['options']['menu_attach_block'] = $values['menu_attach_block'];
   }
 
-  $block = menu_attach_block_load_from_key($values['menu_attach_block']['name']);
   unset($values['menu_attach_block']);
 }
 
