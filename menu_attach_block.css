@@ -14,40 +14,52 @@ div.messages.status.block {
 
 .menu-attach-block {
   display: none;
-  left: 0;
-  position: absolute;
-  top: 35px;
-  width: 100%;
-  z-index: 999;
 }
 
-#navigation li.attached-block a {
+.menu-attach-block.orientation-horizontal{
+  position: relative;
+}
+.menu-attach-block.orientation-horizontal .block {
+  background-color: white;
+  padding: 1em;
+  position: absolute;
+  top: 2.5em;
+  width: 200%;
+  z-index: 99999;
+}
+
+.menu-attach-block.orientation-vertical {
+  clear: both;
+}
+
+li.attached-block a {
   display: inline-block;
 }
-#navigation li.attached-block a.attached-block {
-  border-right: 1px solid #927c89;
-}
 
-
-.menu-attach-block-drop-link,
-#navigation li a.menu-attach-block-drop-link {
-  background: transparent url("arrow-asc.png") no-repeat scroll;
+a.menu-attach-block-drop-link,
+a.menu-attach-block-drop-link:hover,
+a.menu-attach-block-drop-link:focus,
+#main-menu a.menu-attach-block-drop-link,
+#main-menu a.menu-attach-block-drop-link:hover,
+#main-menu a.menu-attach-block-drop-link:focus {
+  background: transparent url("arrow-asc.png") no-repeat scroll 2px;
+  border: 0;
+  display: inline-block;
   height: 100%;
   margin: 0;
   padding: 0 9px;
   text-indent: -9999em;
+  text-shadow: none;
   width: 3px;
 }
 
-#navigation li.dropped a.menu-attach-block-drop-link {
+li.dropped a.menu-attach-block-drop-link,
+#main-menu li.dropped a.menu-attach-block-drop-link {
   background-image: url("arrow-desc.png");
+  border: none;
   height: 100%;
   margin: 0;
   padding: 0 9px;
   text-indent: -9999em;
   width: 3px;
-}
-
-#navigation li a.menu-attach-block-drop-link:focus {
-  border: none;
 }

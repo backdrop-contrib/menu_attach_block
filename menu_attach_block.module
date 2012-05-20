@@ -72,7 +72,6 @@ function menu_attach_block_link(&$variables) {
     $block_output = menu_attach_block_block_render($block['module'], $block['delta']);
     if (!empty($block_output)) {
       // @todo Make a proper theme function.
-      dpm($options);
       $class = 'menu-attach-block orientation-' . $options['menu_attach_block']['orientation'];
       $block_output = '<div class="' . $class . '">' . PHP_EOL . $block_output . PHP_EOL . '</div>';
       return $link . $block_output;
@@ -202,8 +201,6 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
   // Inject handlers.
   $form['#validate'] = array_merge(array('menu_attach_block_menu_edit_item_validate'), $form['#validate']);
   $form['#submit'] = array_merge(array('menu_attach_block_menu_edit_item_submit'), $form['#submit']);
-
-  dpm($form, 'form');
 }
 
 /**

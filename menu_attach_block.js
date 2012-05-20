@@ -8,6 +8,9 @@
         $(link).parent().toggleClass('dropped');
         event.preventDefault();
       });
+      // Prevent other Javascript from effecting the display of drop links.
+      $('.menu-attach-block-drop-link')
+        .hover(function(){return false;}, function(){return false;});
     }
   }
 }(jQuery));
