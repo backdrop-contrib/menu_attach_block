@@ -127,7 +127,6 @@ function menu_attach_block_theme_registry_alter(&$registry) {
  * Appends the attached view to the title of the menu item.
  */
 function menu_attach_block_form_menu_overview_form_alter(&$form, &$form_state) {
-  drupal_add_css(drupal_get_path('module', 'menu_attach_block') . '/menu_attach_block.css', array('group' => CSS_DEFAULT));
   $elements = element_children($form);
 
   foreach ($elements as $mlid) {
