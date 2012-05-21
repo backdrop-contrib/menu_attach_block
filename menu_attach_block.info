@@ -1,7 +1,6 @@
 name = Menu Attach Block
 description = "Embed blocks into menu items."
 core = 7.x
-php = 5.3
 
 dependencies[] = menu
 dependencies[] = block

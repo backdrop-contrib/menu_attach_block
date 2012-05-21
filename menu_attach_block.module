@@ -93,7 +93,7 @@ function menu_attach_block_preprocess_links(&$variables) {
     foreach ($variables['links'] as $key => &$link) {
       if (array_key_exists('menu_attach_block', $link)) {
         $attached_block = TRUE;
-        
+
         $link['attributes']['class'][] = 'attached-block';
         // Rebuild the keys of the array, preserving the order. Array keys are
         // used for keys in the li element of link lists - @see theme_links.
@@ -229,6 +229,7 @@ function menu_attach_block_menu_edit_item_submit($form, &$form_state) {
     $values['menu_attach_block']['plid'] = $values['original_item']['plid'];
     $values['options']['menu_attach_block'] = $values['menu_attach_block'];
   }
+
 
   unset($values['menu_attach_block']);
 }
