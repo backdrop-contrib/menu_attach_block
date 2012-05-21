@@ -25,7 +25,10 @@ div.messages.status.block {
   position: absolute;
   top: 2.5em;
   width: 200%;
-  z-index: 99999;
+  /*
+  Note that overlay module has a z-index of 600.
+  */
+  z-index: 400;
 }
 
 .menu-attach-block.orientation-vertical {
@@ -42,7 +45,7 @@ a.menu-attach-block-drop-link:focus,
 #main-menu a.menu-attach-block-drop-link,
 #main-menu a.menu-attach-block-drop-link:hover,
 #main-menu a.menu-attach-block-drop-link:focus,
-#main-menu-links li.active-trail a.menu-attach-block-drop-link{
+#main-menu-links li.active-trail a.menu-attach-block-drop-link {
   background: transparent url("arrow-asc.png") no-repeat scroll 2px;
   border: 0;
   display: inline-block;
