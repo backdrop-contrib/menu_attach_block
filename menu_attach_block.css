@@ -12,14 +12,14 @@ div.messages.status.block {
   padding: 2px 8px;
 }
 
-.menu-attach-block {
+.menu-attach-block-wrapper {
   display: none;
 }
 
-.menu-attach-block.orientation-horizontal {
+.menu-attach-block-wrapper.orientation-horizontal {
   position: relative;
 }
-.menu-attach-block.orientation-horizontal .block {
+.menu-attach-block-wrapper.orientation-horizontal .block {
   background-color: white;
   padding: 1em;
   position: absolute;
@@ -31,7 +31,7 @@ div.messages.status.block {
   z-index: 400;
 }
 
-.menu-attach-block.orientation-vertical {
+.menu-attach-block-wrapper.orientation-vertical {
   clear: both;
 }
 

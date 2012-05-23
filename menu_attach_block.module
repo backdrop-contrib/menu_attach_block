@@ -27,6 +27,18 @@ function menu_attach_block_menu() {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function menu_attach_block_theme() {
+  return array(
+    'menu_attach_block_wrapper' => array(
+      'template' => 'menu_attach_block_wrapper',
+      'arguments' => array('content' => NULL, 'orientation' => NULL),
+    ),
+  );
+}
+
+/**
  * Override theme_link().
  *
  * Render a block inside a link.
@@ -71,15 +83,33 @@ function menu_attach_block_link(&$variables) {
     // Get the block html.
     $block_output = menu_attach_block_block_render($block['module'], $block['delta']);
     if (!empty($block_output)) {
-      // @todo Make a proper theme function.
-      $class = 'menu-attach-block orientation-' . $options['menu_attach_block']['orientation'];
-      $block_output = '<div class="' . $class . '">' . PHP_EOL . $block_output . PHP_EOL . '</div>';
+
+      $variables = array(
+        'orientation' => $options['menu_attach_block']['orientation'],
+        'content' => $block_output,
+      );
+      $block_output = theme('menu_attach_block_wrapper', $variables);
       return $link . $block_output;
     }
   }
 
   // Otherwise, pass through to the original theme function.
   return theme('menu_attach_block_link_default', $variables);
+}
+
+/**
+ * Processes variables for menu_attach_block.tpl.php.
+ *
+ * @param array $variables
+ *   Array of theme variables, with members:
+ *    - content: HTML of embedded block.
+ *    - orientation: Menu orientation: either horizontal or vertical.
+ */
+function template_preprocess_menu_attach_block_wrapper(&$variables) {
+  // Add new CSS classes to be processed by template_process. This allows for
+  // other preprocess functions to easily alter the list of classes for the
+  // wrapper before they are output.
+  $variables['classes_array'][] = drupal_html_class('orientation-' . $variables['orientation']);
 }
 
 /**
