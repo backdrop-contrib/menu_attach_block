@@ -10,3 +10,6 @@ stylesheets[all][] = menu_attach_block.css
 scripts[] = menu_attach_block.js
 
 configure = admin/structure/menu
+
+files[] = menu_attach_block.test
+
