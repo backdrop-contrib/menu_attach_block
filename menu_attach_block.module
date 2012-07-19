@@ -121,7 +121,11 @@ function menu_attach_block_preprocess_links(&$variables) {
   // @todo Investigate in more detail.
   if (array_key_exists('links', $variables) && is_array($variables['links']) && count($variables['links'])) {
     foreach ($variables['links'] as $key => &$link) {
-      if (is_array($link) && array_key_exists('menu_attach_block', $link)) {
+      if (
+	is_array($link) &&
+	array_key_exists('menu_attach_block', $link) &&
+	empty($link['menu_attach_block']['name']) == FALSE
+      ) {
         $attached_block = TRUE;
 
         $link['attributes']['class'][] = 'attached-block';
