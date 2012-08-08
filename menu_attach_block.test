@@ -19,10 +19,10 @@ class AttachBlockTestCase extends DrupalWebTestCase {
     parent::setUp(array('menu', 'menu_attach_block'));
     // Set up a user with privileges to add blocks.
     $this->privileged_user = $this->drupalCreateUser(array('administer menu'));
-    $this->drupalLogin($this->privileged_user);
   }
 
   function testAttachBlock() {
+    $this->drupalLogin($this->privileged_user);
     // Save a new menu item with an attached block.
     $edit = array();
     $edit['link_title'] = $this->randomName();
@@ -40,11 +40,11 @@ class AttachBlockTestCase extends DrupalWebTestCase {
       'Frontend'
     );
 
+    // Check that the block has been attached to the correct link.
     $this->assertPattern(
-      '|<a href="\/\?q=' . $edit['link_path'] . '" title="" class="attached-block">' . $edit['link_title'] . '</a>|',
+      '|<a href="\/[\?q=]?' . $edit['link_path'] . '" title="" class="attached-block">' . $edit['link_title'] . '</a>|',
       t('Block attached to correct link'),
       'Frontend'
     );
-
   }
 }
