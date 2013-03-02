@@ -18,13 +18,13 @@
  */
 function menu_attach_block_menu() {
   return array(
-    'menu_attach_block/ajax/%'=>array(
-      'title' => 'Ajax callback for providing rendered block contents',
+    'menu_attach_block/ajax/%' => array(
+      'title' => 'AJAX callback for providing rendered block contents.',
       'page callback' => 'menu_attach_block_render_ajax_block',
       'page arguments' => array(2),
       'type' => MENU_CALLBACK,
       'access callback' => TRUE,
-    ),  
+    ),
     '<block>' => array(
       'page callback' => 'drupal_not_found',
       'access callback' => TRUE,
@@ -62,6 +62,7 @@ function menu_attach_block_link(&$variables) {
   $block = FALSE;
   $options = $variables['options'];
 
+  // If a block is attached to this menu item, load it.
   if (isset($options['menu_attach_block']) && !empty($options['menu_attach_block']['name'])) {
     $block = menu_attach_block_load_from_key($options['menu_attach_block']['name']);
   }
@@ -74,9 +75,9 @@ function menu_attach_block_link(&$variables) {
       // Build the link manually instead of using l() to avoid getting caught in
       // theme_link() again.
       $link = '<a href="' . check_plain(url($variables['path'], $variables['options'])) . '"' . drupal_attributes($variables['options']['attributes']) . '>' . ($variables['options']['html'] ? $variables['text'] : check_plain($variables['text'])) . '</a>';
-      
+
       $menu_classes = array('menu-attach-block-drop-link');
-      if($options['menu_attach_block']['use_ajax']){
+      if ($options['menu_attach_block']['use_ajax']) {
         $menu_classes[] = 'menu-ajax-enabled';
       }
       $attributes = array(
@@ -93,14 +94,16 @@ function menu_attach_block_link(&$variables) {
       );
       $link .= PHP_EOL . l(t('More'), '', $l_options);
     }
+
     $block_output = '';
-    // Get the block html if normal rendering is used. (not ajax)
-    if(!$options['menu_attach_block']['use_ajax']){
+    // Get the block html if normal rendering is used (not ajax).
+    if (!$options['menu_attach_block']['use_ajax']) {
       $block_output = menu_attach_block_block_render($block['module'], $block['delta']);
-    }else{
+    }
+    else {
       $block_output = '<span class="ajax-progress"><span class="throbber"></span></span>';
     }
-    
+
     if (!empty($block_output)) {
       $variables = array(
         'orientation' => $options['menu_attach_block']['orientation'],
@@ -176,14 +179,13 @@ function menu_attach_block_theme_registry_alter(&$registry) {
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * Appends the attached view to the title of the menu item.
+ * Appends the attached block's title to the title of the menu item.
  */
 function menu_attach_block_form_menu_overview_form_alter(&$form, &$form_state) {
   $elements = element_children($form);
 
   foreach ($elements as $mlid) {
     $element = &$form[$mlid];
-    $block = array();
     // Only process menu items.
     if (isset($element['#item'])) {
       $item = &$element['#item'];
@@ -244,8 +246,8 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
 
   $form['menu_attach_block']['use_ajax'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Use Ajax for Loading Content'),
-    '#default_value' => isset($form['options']['#value']['menu_attach_block']['use_ajax']) ? $form['options']['#value']['menu_attach_block']['use_ajax'] : FALSE, 
+    '#title' => t('Use AJAX for Loading Content'),
+    '#default_value' => isset($form['options']['#value']['menu_attach_block']['use_ajax']) ? $form['options']['#value']['menu_attach_block']['use_ajax'] : FALSE,
   );
   $form['menu_attach_block']['orientation'] = array(
     '#type' => 'select',
@@ -283,7 +285,6 @@ function menu_attach_block_menu_edit_item_submit($form, &$form_state) {
     $values['menu_attach_block']['plid'] = $values['original_item']['plid'];
     $values['options']['menu_attach_block'] = $values['menu_attach_block'];
   }
-
 
   unset($values['menu_attach_block']);
 }
@@ -346,13 +347,15 @@ function menu_attach_block_block_render($module, $delta) {
 }
 
 /**
- * Function for providing block contents for ajax callback.
- * 
+ * Prints block content, suitable for use with AJAX callbacks.
+ *
  * @param string $block_id
- *  Block name seperated by | (pipe operator).
+ *   Block name separated by | (pipe operator).
+ *
+ * @todo Move to use core AJAX instead of implementing via jQuery only.
  */
-function menu_attach_block_render_ajax_block($block_id){
+function menu_attach_block_render_ajax_block($block_id) {
   $block = menu_attach_block_load_from_key($block_id);
   print menu_attach_block_block_render($block['module'], $block['delta']);
-  return ;
+  return;
 }
