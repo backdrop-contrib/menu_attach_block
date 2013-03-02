@@ -18,6 +18,13 @@
  */
 function menu_attach_block_menu() {
   return array(
+    'menu_attach_block/ajax/%'=>array(
+      'title' => 'Ajax callback for providing rendered block contents',
+      'page callback' => 'menu_attach_block_render_ajax_block',
+      'page arguments' => array(2),
+      'type' => MENU_CALLBACK,
+      'access callback' => TRUE,
+    ),  
     '<block>' => array(
       'page callback' => 'drupal_not_found',
       'access callback' => TRUE,
@@ -67,8 +74,14 @@ function menu_attach_block_link(&$variables) {
       // Build the link manually instead of using l() to avoid getting caught in
       // theme_link() again.
       $link = '<a href="' . check_plain(url($variables['path'], $variables['options'])) . '"' . drupal_attributes($variables['options']['attributes']) . '>' . ($variables['options']['html'] ? $variables['text'] : check_plain($variables['text'])) . '</a>';
+      
+      $menu_classes = array('menu-attach-block-drop-link');
+      if($options['menu_attach_block']['use_ajax']){
+        $menu_classes[] = 'menu-ajax-enabled';
+      }
       $attributes = array(
-        'class' => 'menu-attach-block-drop-link',
+        'class' => implode(' ', $menu_classes),
+        'data-block-id' => $options['menu_attach_block']['name'],
         'id' => $variables['path'] . '-drop-link-' . $variables['options']['menu_attach_block']['mlid'],
       );
       // Pass a space as the fragment parameter to get a <a href='# '> link.
@@ -80,10 +93,15 @@ function menu_attach_block_link(&$variables) {
       );
       $link .= PHP_EOL . l(t('More'), '', $l_options);
     }
-    // Get the block html.
-    $block_output = menu_attach_block_block_render($block['module'], $block['delta']);
+    $block_output = '';
+    // Get the block html if normal rendering is used. (not ajax)
+    if(!$options['menu_attach_block']['use_ajax']){
+      $block_output = menu_attach_block_block_render($block['module'], $block['delta']);
+    }else{
+      $block_output = '<span class="ajax-progress"><span class="throbber"></span></span>';
+    }
+    
     if (!empty($block_output)) {
-
       $variables = array(
         'orientation' => $options['menu_attach_block']['orientation'],
         'content' => $block_output,
@@ -224,6 +242,11 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
     '#options' => $options,
   );
 
+  $form['menu_attach_block']['use_ajax'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use Ajax for Loading Content'),
+    '#default_value' => isset($form['options']['#value']['menu_attach_block']['use_ajax']) ? $form['options']['#value']['menu_attach_block']['use_ajax'] : FALSE, 
+  );
   $form['menu_attach_block']['orientation'] = array(
     '#type' => 'select',
     '#title' => t('Menu orientation'),
@@ -320,4 +343,16 @@ function menu_attach_block_block_render($module, $delta) {
   $build = _block_get_renderable_array($block_content);
   $block_rendered = drupal_render($build);
   return $block_rendered;
+}
+
+/**
+ * Function for providing block contents for ajax callback.
+ * 
+ * @param string $block_id
+ *  Block name seperated by | (pipe operator).
+ */
+function menu_attach_block_render_ajax_block($block_id){
+  $block = menu_attach_block_load_from_key($block_id);
+  print menu_attach_block_block_render($block['module'], $block['delta']);
+  return ;
 }
