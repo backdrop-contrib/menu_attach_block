@@ -69,31 +69,35 @@ function menu_attach_block_link(&$variables) {
 
   // Render a block if one is attached to this link.
   if ($block) {
-    $link = '';
     // Render the link with the block content afterwards.
+    $link = '';
+    // menu_attach_block gives users the option to select '<block>' as the menu
+    // path for a link.
     if ($variables['path'] != '<block>') {
       // Build the link manually instead of using l() to avoid getting caught in
       // theme_link() again.
       $link = '<a href="' . check_plain(url($variables['path'], $variables['options'])) . '"' . drupal_attributes($variables['options']['attributes']) . '>' . ($variables['options']['html'] ? $variables['text'] : check_plain($variables['text'])) . '</a>';
-
-      $menu_classes = array('menu-attach-block-drop-link');
-      if ($options['menu_attach_block']['use_ajax']) {
-        $menu_classes[] = 'menu-ajax-enabled';
-      }
-      $attributes = array(
-        'class' => implode(' ', $menu_classes),
-        'data-block-id' => $options['menu_attach_block']['name'],
-        'id' => $variables['path'] . '-drop-link-' . $variables['options']['menu_attach_block']['mlid'],
-      );
-      // Pass a space as the fragment parameter to get a <a href='# '> link.
-      // @link http://bit.ly/zZXArS @endlink
-      $l_options = array(
-        'fragment' => ' ',
-        'external' => TRUE,
-        'attributes' => $attributes,
-      );
-      $link .= PHP_EOL . l(t('More'), '', $l_options);
+    } else {
+      $link = '<a>' . $variables['text'] . '</a>';
     }
+
+    $menu_classes = array('menu-attach-block-drop-link');
+    if ($options['menu_attach_block']['use_ajax']) {
+      $menu_classes[] = 'menu-ajax-enabled';
+    }
+    $attributes = array(
+      'class' => implode(' ', $menu_classes),
+      'data-block-id' => $options['menu_attach_block']['name'],
+      'id' => $variables['path'] . '-drop-link-' . $variables['options']['menu_attach_block']['mlid'],
+    );
+    // Pass a space as the fragment parameter to get a <a href='# '> link.
+    // @link http://bit.ly/zZXArS @endlink
+    $l_options = array(
+      'fragment' => ' ',
+      'external' => TRUE,
+      'attributes' => $attributes,
+    );
+    $link .= PHP_EOL . l(t('More'), '', $l_options);
 
     $block_output = '';
     // Get the block html if normal rendering is used (not ajax).
