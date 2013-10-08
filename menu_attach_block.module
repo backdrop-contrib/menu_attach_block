@@ -81,23 +81,26 @@ function menu_attach_block_link(&$variables) {
       $link = '<a>' . $variables['text'] . '</a>';
     }
 
-    $menu_classes = array('menu-attach-block-drop-link');
-    if ($options['menu_attach_block']['use_ajax']) {
-      $menu_classes[] = 'menu-ajax-enabled';
+    if ($options['menu_attach_block']['use_ajax'] || !$options['menu_attach_block']['no_drop']) {
+      $menu_classes = array('menu-attach-block-drop-link');
+      if ($options['menu_attach_block']['use_ajax']) {
+        $menu_classes[] = 'menu-ajax-enabled';
+      }
+      $attributes = array(
+        'class' => implode(' ', $menu_classes),
+        'data-block-id' => $options['menu_attach_block']['name'],
+        'id' => $variables['path'] . '-drop-link-' . $variables['options']['menu_attach_block']['mlid'],
+      );
+      // Pass a space as the fragment parameter to get a <a href='# '> link.
+      // @link http://bit.ly/zZXArS @endlink
+      $l_options = array(
+        'fragment' => ' ',
+        'external' => TRUE,
+        'attributes' => $attributes,
+      );
+      $link .= PHP_EOL . l(t('More'), '', $l_options);
+      drupal_add_js(drupal_get_path('module', 'menu_attach_block') . '/menu_attach_block.js');
     }
-    $attributes = array(
-      'class' => implode(' ', $menu_classes),
-      'data-block-id' => $options['menu_attach_block']['name'],
-      'id' => $variables['path'] . '-drop-link-' . $variables['options']['menu_attach_block']['mlid'],
-    );
-    // Pass a space as the fragment parameter to get a <a href='# '> link.
-    // @link http://bit.ly/zZXArS @endlink
-    $l_options = array(
-      'fragment' => ' ',
-      'external' => TRUE,
-      'attributes' => $attributes,
-    );
-    $link .= PHP_EOL . l(t('More'), '', $l_options);
 
     $block_output = '';
     // Get the block html if normal rendering is used (not ajax).
@@ -134,7 +137,9 @@ function template_preprocess_menu_attach_block_wrapper(&$variables) {
   // Add new CSS classes to be processed by template_process. This allows for
   // other preprocess functions to easily alter the list of classes for the
   // wrapper before they are output.
-  $variables['classes_array'][] = drupal_html_class('orientation-' . $variables['orientation']);
+  if ($variables['orientation'] != 'none') {
+    $variables['classes_array'][] = drupal_html_class('orientation-' . $variables['orientation']);
+  }
 }
 
 /**
@@ -253,11 +258,21 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
     '#title' => t('Use AJAX for Loading Content'),
     '#default_value' => isset($form['options']['#value']['menu_attach_block']['use_ajax']) ? $form['options']['#value']['menu_attach_block']['use_ajax'] : FALSE,
   );
+  $form['menu_attach_block']['no_drop'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Don\'t render javascript drop link'),
+    '#default_value' => isset($form['options']['#value']['menu_attach_block']['no_drop']) ? $form['options']['#value']['menu_attach_block']['no_drop'] : FALSE,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="menu_attach_block[use_ajax]"]' => array('checked' => FALSE),
+      ),
+    ),
+  );
   $form['menu_attach_block']['orientation'] = array(
     '#type' => 'select',
     '#title' => t('Menu orientation'),
-    '#default_value' => isset($form['options']['#value']['menu_attach_block']['name']) ? $form['options']['#value']['menu_attach_block']['name'] : 'horizontal',
-    '#options' => array('horizontal' => t('Horizontal'), 'vertical' => t('Vertical')),
+    '#default_value' => isset($form['options']['#value']['menu_attach_block']['orientation']) ? $form['options']['#value']['menu_attach_block']['orientation'] : 'horizontal',
+    '#options' => array('horizontal' => t('Horizontal'), 'vertical' => t('Vertical'), 'none' => t('None')),
   );
   // Inject handlers.
   $form['#validate'] = array_merge(array('menu_attach_block_menu_edit_item_validate'), $form['#validate']);
