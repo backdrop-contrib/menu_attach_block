@@ -23,5 +23,5 @@
  */
 ?>
 <div class="<?php print $classes?>">
-  <?php print $content; ?>
+	<?php print $content; ?>
 </div>

@@ -12,13 +12,10 @@ div.messages.status.block {
   padding: 2px 8px;
 }
 
-.menu-attach-block-wrapper {
-  display: none;
-}
-
 .menu-attach-block-wrapper.orientation-horizontal {
   position: relative;
 }
+
 .menu-attach-block-wrapper.orientation-horizontal .block {
   background-color: white;
   padding: 1em;
@@ -39,13 +36,13 @@ li.attached-block a {
   display: inline-block;
 }
 
-a.menu-attach-block-drop-link,
-a.menu-attach-block-drop-link:hover,
-a.menu-attach-block-drop-link:focus,
-#main-menu a.menu-attach-block-drop-link,
-#main-menu a.menu-attach-block-drop-link:hover,
-#main-menu a.menu-attach-block-drop-link:focus,
-#main-menu-links li.active-trail a.menu-attach-block-drop-link {
+a.menu-attach-block-drop-link.external,
+a.menu-attach-block-drop-link.external:hover,
+a.menu-attach-block-drop-link.external:focus,
+#main-menu a.menu-attach-block-drop-link.external,
+#main-menu a.menu-attach-block-drop-link.external:hover,
+#main-menu a.menu-attach-block-drop-link.external:focus,
+#main-menu-links li.active-trail a.menu-attach-block-drop-link.external {
   background: transparent url("arrow-asc.png") no-repeat scroll 2px;
   border: 0;
   display: inline-block;
@@ -57,8 +54,8 @@ a.menu-attach-block-drop-link:focus,
   width: 3px;
 }
 
-li.dropped a.menu-attach-block-drop-link,
-#main-menu li.dropped a.menu-attach-block-drop-link {
+li a.menu-attach-block-drop-link.external.dropped,
+#main-menu li a.menu-attach-block-drop-link.external.dropped {
   background-image: url("arrow-desc.png");
   border: none;
   height: 100%;
@@ -66,4 +63,12 @@ li.dropped a.menu-attach-block-drop-link,
   padding: 0 9px;
   text-indent: -9999em;
   width: 3px;
+}
+
+a.menu-attach-block-drop-link ~ .menu-attach-block-wrapper {
+  display: none;
+}
+
+a.menu-attach-block-drop-link.dropped ~ .menu-attach-block-wrapper {
+  display: initial;
 }

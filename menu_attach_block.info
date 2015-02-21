@@ -6,8 +6,5 @@ dependencies[] = menu
 dependencies[] = block
 
 stylesheets[all][] = menu_attach_block.css
-
 configure = admin/structure/menu
-
 files[] = menu_attach_block.test
-
