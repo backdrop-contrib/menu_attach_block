@@ -19,7 +19,6 @@
  * @see template_process()
  *
  * @ingroup themeable
- *
  */
 ?>
 <div class="<?php print $classes?>">

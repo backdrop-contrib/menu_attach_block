@@ -85,7 +85,6 @@ function menu_attach_block_link(&$variables) {
     if ($variables['path'] != '<block>' && $variables['path'] != '<droplink>') {
       // Build the link manually instead of using l() to avoid getting caught in
       // theme_link() again.
-
       $variables['menu_attach_block_no_render'] = TRUE;
       $link = theme('link', $variables);
     }
@@ -272,7 +271,7 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
   if (isset($form['link_path']['#description'])) {
     $form['link_path']['#description'] .= ' ' . t('Enter %block to disable the link and display only the attached block. Enter %droplink to have link show/hide block via javascript.', array(
         '%block' => '<block>',
-        '%droplink' => '<droplink>'
+        '%droplink' => '<droplink>',
       ));
   }
 
@@ -349,7 +348,7 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
     '#options' => array(
       'horizontal' => t('Horizontal'),
       'vertical' => t('Vertical'),
-      'none' => t('None')
+      'none' => t('None'),
     ),
   );
 
