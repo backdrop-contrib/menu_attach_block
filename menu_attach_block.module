@@ -261,11 +261,13 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
   $form['menu_attach_block']['use_ajax'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use AJAX for Loading Content'),
+    '#description' => t('Load blocks via an AJAX call, instead of rendering them with standard page output.'),
     '#default_value' => isset($form['options']['#value']['menu_attach_block']['use_ajax']) ? $form['options']['#value']['menu_attach_block']['use_ajax'] : FALSE,
   );
   $form['menu_attach_block']['no_drop'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Don\'t render javascript drop link'),
+    '#title' => t("Don't render javascript drop link"),
+    '#description' => t('When unchecked, small links are rendered beside menu items, which are used to show/hide the attached block.'),
     '#default_value' => isset($form['options']['#value']['menu_attach_block']['no_drop']) ? $form['options']['#value']['menu_attach_block']['no_drop'] : FALSE,
     '#states' => array(
       'visible' => array(
