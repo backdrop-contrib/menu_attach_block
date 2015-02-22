@@ -2,25 +2,37 @@
   // Implement a show/hide.
   Drupal.behaviors.menu_attach_block = {
     attach: function (context, settings) {
-      $('a.menu-attach-block-drop-link.expand-on-hover', context).hover(function() {
-        if (!($(this).hasClass('dropped'))) {
-          expand_toggle($(this));
-        }
-      }, function() { return false; });
+      // Attach hover events, if this link has been defined as hoverable.
+      $('a.menu-attach-block-drop-link.expand-on-hover', context).hover(
+          /**
+           * Show on mouse in.
+           */
+          function() {
+            // Show the block if it is not already shown.
+            if (!($(this).hasClass('dropped'))) {
+              expand_toggle($(this));
+            }
+          },
+          /**
+           * Hide on mouse out.
+           */
+          function() {
+            expand_toggle($(this));
+          }
+      );
 
-      $('li', context).hover(function() { return false; }, function() {
-        var link = $(this).find('a.menu-attach-block-drop-link.expand-on-hover.dropped');
-
-        if ($(link).length) {
-          expand_toggle(link);
-        }
-      });
-
+      // Attach click events for links configured to use that.
       $('a.menu-attach-block-drop-link.expand-on-click', context).click(function(event) {
         expand_toggle($(this));
         event.preventDefault();
       });
 
+      /**
+       * Shows a block embedded inside a menu item.
+       *
+       * @param link
+       *   The link attached to this menu item, which triggers block show.
+       */
       function expand_toggle(link) {
         if (link.hasClass('menu-ajax-enabled')) {
           // Load contents using AJAX.
@@ -34,19 +46,13 @@
               success: function ($block_html) {
                 $(link).next('.menu-attach-block-wrapper').html($block_html);
                 Drupal.attachBehaviors(link);
-
-                $(link).next('.menu-attach-block-wrapper').slideToggle('fast');
-                $(link).toggleClass('dropped');
               }
             });
-          } else {
-            $(link).next('.menu-attach-block-wrapper').slideToggle('fast');
-            $(link).toggleClass('dropped');
           }
-        } else {
-          $(link).next('.menu-attach-block-wrapper').slideToggle('fast');
-          $(link).toggleClass('dropped');
         }
+        // Show/hide the link.
+        $(link).next('.menu-attach-block-wrapper').slideToggle('fast');
+        $(link).toggleClass('dropped');
       }
     }
   }
