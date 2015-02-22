@@ -323,6 +323,7 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
   $form['menu_attach_block']['dropped'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show expanded on load'),
+    '#description' => t('Show the block by default, instead of hiding it.'),
     '#default_value' => isset($form['options']['#value']['menu_attach_block']['dropped']) ? $form['options']['#value']['menu_attach_block']['dropped'] : FALSE,
     '#states' => array(
       'visible' => array(
@@ -334,6 +335,7 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
   $form['menu_attach_block']['on_hover'] = array(
     '#type' => 'checkbox',
     '#title' => t('Trigger expansion on mouse hover'),
+    '#description' => t('Show block on hover instead of click.'),
     '#default_value' => isset($form['options']['#value']['menu_attach_block']['on_hover']) ? $form['options']['#value']['menu_attach_block']['on_hover'] : FALSE,
     '#states' => array(
       'visible' => array(
