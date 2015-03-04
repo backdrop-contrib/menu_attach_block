@@ -93,7 +93,7 @@ function menu_attach_block_link(&$variables) {
       $link = theme('link', $variables);
     }
     else {
-      // remove link
+      // Remove link.
       $link = '';
     }
 
@@ -104,13 +104,13 @@ function menu_attach_block_link(&$variables) {
       }
 
       if ($variables['path'] == '<droplink>') {
-        // use menu item as drop link, add other class passed in on $variables
+        // Use menu item as drop link, add other class passed in on $variables.
         if (isset($variables['attributes']['class'])) {
           $menu_classes = array_merge($menu_classes, $variables['attributes']['class']);
         }
       }
       else {
-        // add class 'external' to "More" link to apply styles
+        // Add class 'external' to "More" link to apply styles.
         $menu_classes[] = 'external';
       }
 
@@ -121,7 +121,7 @@ function menu_attach_block_link(&$variables) {
         $menu_classes[] = 'expand-on-click';
       }
 
-      // if 'expanded on load' set, add class 'dropped'
+      // If 'expanded on load' set, add class 'dropped'.
       if (isset($variables['options']['menu_attach_block']['dropped']) && $variables['options']['menu_attach_block']['dropped']) {
         $menu_classes[] = 'dropped';
       }
@@ -141,7 +141,7 @@ function menu_attach_block_link(&$variables) {
       );
 
       if ($variables['path'] == '<droplink>') {
-        // use menu item as drop link
+        // Use menu item as drop link.
         $link .= l($variables['text'], '', $l_options);
       }
       else {
@@ -410,7 +410,7 @@ function menu_attach_block_menu_edit_item_submit($form, &$form_state) {
  * @param string $key
  *   Key as saved by the menu admin form, in the format module|delta.
  * @param string $hook
- *   name of hook_block implementation to call to get extra data about a block.
+ *   Name of hook_block implementation to call to get extra data about a block.
  *   Do not include the 'block_' prefix.
  *
  * @return array
