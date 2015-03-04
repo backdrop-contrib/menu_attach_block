@@ -71,9 +71,13 @@ function menu_attach_block_link(&$variables) {
 
   $block = FALSE;
   $options = $variables['options'];
+
   // If a block is attached to this menu item, load it.
   if (isset($options['menu_attach_block']) && !empty($options['menu_attach_block']['name'])) {
     $block = menu_attach_block_load_from_key($options['menu_attach_block']['name']);
+    // Set default options for menus saved from previous versions of the module.
+    // @see http://php.net/manual/en/language.operators.array.php
+    $options['menu_attach_block'] = $options['menu_attach_block'] + _menu_attach_block_defaults();
   }
 
   // Render a block if one is attached to this link.
@@ -466,5 +470,23 @@ function menu_attach_block_block_render($module, $delta) {
 function menu_attach_block_render_ajax_block($block_id) {
   $block = menu_attach_block_load_from_key($block_id);
   print menu_attach_block_block_render($block['module'], $block['delta']);
-  return;
+}
+
+/**
+ * Returns an array with the structure of MAB settings.
+ *
+ * @return array
+ *   An array with the default options structure.
+ */
+function _menu_attach_block_defaults() {
+  return array(
+    'name' => NULL,
+    'use_ajax' => NULL,
+    'no_drop' => NULL,
+    'dropped' => NULL,
+    'on_hover' => NULL,
+    'orientation' => NULL,
+    'mlid' => NULL,
+    'plid' => NULL,
+  );
 }
