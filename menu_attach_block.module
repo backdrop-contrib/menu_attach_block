@@ -45,7 +45,13 @@ function menu_attach_block_theme() {
   return array(
     'menu_attach_block_wrapper' => array(
       'template' => 'menu_attach_block_wrapper',
-      'arguments' => array('content' => NULL, 'orientation' => NULL),
+      'arguments' =>
+        array(
+          'content' => NULL,
+          'orientation' => NULL,
+          'block' => NULL,
+          'link' => NULL,
+        ),
     ),
   );
 }
@@ -164,6 +170,8 @@ function menu_attach_block_link(&$variables) {
       $variables = array(
         'orientation' => $options['menu_attach_block']['orientation'],
         'content' => $block_output,
+        'block' => $block,
+        'link' => $variables,
       );
       $block_output = theme('menu_attach_block_wrapper', $variables);
       return $link . $block_output;
@@ -274,9 +282,9 @@ function menu_attach_block_form_menu_overview_form_alter(&$form, &$form_state) {
 function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
   if (isset($form['link_path']['#description'])) {
     $form['link_path']['#description'] .= ' ' . t('Enter %block to disable the link and display only the attached block. Enter %droplink to have link show/hide block via javascript.', array(
-        '%block' => '<block>',
-        '%droplink' => '<droplink>',
-      ));
+      '%block' => '<block>',
+      '%droplink' => '<droplink>',
+    ));
   }
 
   $form['menu_attach_block'] = array(
