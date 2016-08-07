@@ -498,3 +498,30 @@ function _menu_attach_block_defaults() {
     'plid' => NULL,
   );
 }
+
+/**
+ * Implements hook_menu_breadcrumb_alter().
+ *
+ * Do not show menu blocks in the breadcrumb.
+ */
+function menu_attach_block_menu_breadcrumb_alter(&$active_trail, $item) {
+  foreach ($active_trail as $index => $crumb) {
+    if (isset($crumb['options']['menu_attach_block'])) {
+      unset($active_trail[$index]['options']['menu_attach_block']);
+    }
+    if (isset($crumb['localized_options']['menu_attach_block'])) {
+      unset($active_trail[$index]['localized_options']['menu_attach_block']);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Do not show menu blocks on the sitemap.
+ */
+function menu_attach_block_preprocess_site_map_menu_link(&$variables) {
+  if (isset($variables['element']['#localized_options']['menu_attach_block'])) {
+    unset($variables['element']['#localized_options']['menu_attach_block']);
+  }
+}
