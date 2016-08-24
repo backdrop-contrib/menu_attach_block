@@ -45,7 +45,7 @@ function menu_attach_block_theme() {
   return array(
     'menu_attach_block_wrapper' => array(
       'template' => 'menu_attach_block_wrapper',
-      'arguments' =>
+      'variables' =>
         array(
           'content' => NULL,
           'orientation' => NULL,
