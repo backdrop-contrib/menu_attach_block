@@ -83,7 +83,7 @@ function menu_attach_block_link(&$variables) {
     $block = menu_attach_block_load_from_key($options['menu_attach_block']['name']);
     // Set default options for menus saved from previous versions of the module.
     // @see http://php.net/manual/en/language.operators.array.php
-    $options['menu_attach_block'] = $options['menu_attach_block'] + _menu_attach_block_defaults();
+    $options['menu_attach_block'] += _menu_attach_block_defaults();
   }
 
   // Render a block if one is attached to this link.
@@ -144,6 +144,7 @@ function menu_attach_block_link(&$variables) {
         'fragment' => ' ',
         'external' => TRUE,
         'attributes' => $attributes,
+        'html' => $options['menu_attach_block']['allow_html'],
       );
 
       if ($variables['path'] == '<droplink>') {
@@ -315,6 +316,12 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
     '#options' => $options,
   );
 
+  $form['menu_attach_block']['allow_html'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow HTML'),
+    '#description' => t('Choose to render HTML in link text.'),
+    '#default_value' => isset($form['options']['#value']['menu_attach_block']['allow_html']) ? $form['options']['#value']['menu_attach_block']['allow_html'] : FALSE,
+  );
   $form['menu_attach_block']['use_ajax'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use AJAX for Loading Content'),
@@ -496,6 +503,7 @@ function _menu_attach_block_defaults() {
     'orientation' => NULL,
     'mlid' => NULL,
     'plid' => NULL,
+    'allow_html' => FALSE,
   );
 }
 
