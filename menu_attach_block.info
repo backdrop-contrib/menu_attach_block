@@ -2,8 +2,9 @@ name = Menu Attach Block
 description = "Embed blocks into menu items."
 core = 7.x
 
-dependencies[] = menu
-dependencies[] = block
+dependencies[] = drupal:menu
+dependencies[] = drupal:block
+dependencies[] = drupal:system (>= 7.40)
 
 stylesheets[all][] = menu_attach_block.css
 configure = admin/structure/menu
