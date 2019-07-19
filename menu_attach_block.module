@@ -133,7 +133,7 @@ function menu_attach_block_link(&$variables) {
       }
 
       $attributes = array(
-        'class' => implode(' ', $menu_classes),
+        'class' => $menu_classes,
         'data-block-id' => $options['menu_attach_block']['name'],
         'id' => $variables['path'] . '-drop-link-' . $variables['options']['menu_attach_block']['mlid'],
       );
