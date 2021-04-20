@@ -1,0 +1,6 @@
+[AttachBlockTestCase]
+name = Attach block test case
+description = Makes sure that a block to a menu item
+group = Menu Attach Block
+file = menu_attach_block.test
+

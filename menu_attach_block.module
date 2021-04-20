@@ -8,9 +8,6 @@
  * instead of, a title and link. When the link is rendered, the block is
  * inserted in the containing element after the <a> tag.
  *
- *  Based heavily on menu_views.module.
- *
- * @link http://drupal.org/project/menu_views @endlink
  */
 
 /**
@@ -26,12 +23,12 @@ function menu_attach_block_menu() {
       'access callback' => TRUE,
     ),
     '<block>' => array(
-      'page callback' => 'drupal_not_found',
+      'page callback' => 'backdrop_not_found',
       'access callback' => TRUE,
       'type' => MENU_CALLBACK,
     ),
     '<droplink>' => array(
-      'page callback' => 'drupal_not_found',
+      'page callback' => 'backdrop_not_found',
       'access callback' => TRUE,
       'type' => MENU_CALLBACK,
     ),
@@ -45,13 +42,12 @@ function menu_attach_block_theme() {
   return array(
     'menu_attach_block_wrapper' => array(
       'template' => 'menu_attach_block_wrapper',
-      'variables' =>
-        array(
-          'content' => NULL,
-          'orientation' => NULL,
-          'block' => NULL,
-          'link' => NULL,
-        ),
+      'variables' => array(
+        'content' => NULL,
+        'orientation' => NULL,
+        'block' => NULL,
+        'link' => NULL,
+      ),
     ),
   );
 }
@@ -155,7 +151,7 @@ function menu_attach_block_link(&$variables) {
         $link .= PHP_EOL . l(t('More'), '', $l_options);
       }
 
-      drupal_add_js(drupal_get_path('module', 'menu_attach_block') . '/menu_attach_block.js');
+      backdrop_add_js(backdrop_get_path('module', 'menu_attach_block') . '/menu_attach_block.js');
     }
 
     $block_output = '';
@@ -196,7 +192,7 @@ function template_preprocess_menu_attach_block_wrapper(&$variables) {
   // other preprocess functions to easily alter the list of classes for the
   // wrapper before they are output.
   if ($variables['orientation'] != 'none') {
-    $variables['classes_array'][] = drupal_html_class('orientation-' . $variables['orientation']);
+    $variables['classes_array'][] = backdrop_html_class('orientation-' . $variables['orientation']);
   }
 }
 
@@ -265,9 +261,9 @@ function menu_attach_block_form_menu_overview_form_alter(&$form, &$form_state) {
           if ($item['link_path'] != '<block>') {
             // Manually create the link, otherwise it will be caught by
             // menu_attach_block_link().
-            $title = '<a href="' . check_url(url($item['href'], $item['localized_options'])) . '"' . drupal_attributes($item['localized_options']['attributes']) . '>' . check_plain($item['title']) . '</a> ';
+            $title = '<a href="' . check_url(url($item['href'], $item['localized_options'])) . '"' . backdrop_attributes($item['localized_options']['attributes']) . '>' . check_plain($item['title']) . '</a> ';
           }
-          $link = l($info, 'admin/structure/block/manage/' . $block['module'] . '/' . $block['delta'] . '/configure');
+          $link = l($info, 'admin/structure/block/manage/' . $block['delta'] . '/configure');
           $element['title']['#markup'] = $title . '<div class="messages status block">Attached block:  ' . $link . ' </div>';
         }
       }
@@ -300,10 +296,9 @@ function menu_attach_block_form_menu_edit_item_alter(&$form, &$form_state) {
   );
 
   $options = array();
-  // @todo Change to use code similar to that in block_admin_display().
-  $blocks = _block_rehash();
-  foreach ($blocks as $block) {
-    $options[$block['module'] . '|' . $block['delta']] = $block['info'];
+  $blocks = layout_get_block_info()['block'];
+  foreach ($blocks as $key => $block) {
+    $options['block' . '|' . $key] = $block['info'];
   }
   asort($options);
 
@@ -434,22 +429,13 @@ function menu_attach_block_menu_edit_item_submit($form, &$form_state) {
  * @see http://api.drupal.org/api/search/7/hook_block
  */
 function menu_attach_block_load_from_key($key, $hook = FALSE) {
-  $block = (array) call_user_func_array('block_load', explode('|', $key));
-  // If no 'theme' key is set, then there is no such block.
-  if (!array_key_exists('theme', $block)) {
-    return FALSE;
-  }
-  if ($hook) {
-    // Hack for hook_block_info for blocks with numeric keys.
-    if ($hook === 'info' && is_numeric($block['delta'])) {
-      $info = module_invoke($block['module'], 'block_info', $block['delta']);
-      $info = $info[$block['delta']];
-      $block[$block['delta']] = $info;
-    }
-    else {
-      $block = array_merge($block, (array) module_invoke($block['module'], 'block_' . $hook, $block['delta']));
-    }
-  }
+  $explode = explode('|', $key);
+  $key = $explode[1];
+  $block = block_custom_block_load($key, LANGUAGE_NONE);
+  $block['module'] = $explode[0];
+  $block[$key] = array(
+    'info' => $block['info'],
+  );
   return $block;
 }
 
@@ -470,7 +456,7 @@ function menu_attach_block_block_render($module, $delta) {
   $block = block_load($module, $delta);
   $block_content = _block_render_blocks(array($block));
   $build = _block_get_renderable_array($block_content);
-  $block_rendered = drupal_render($build);
+  $block_rendered = backdrop_render($build);
   return $block_rendered;
 }
 

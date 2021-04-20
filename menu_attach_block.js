@@ -1,6 +1,6 @@
 (function ($) {
   // Implement a show/hide.
-  Drupal.behaviors.menu_attach_block = {
+  Backdrop.behaviors.menu_attach_block = {
     attach: function (context, settings) {
       // Attach hover events, if this link has been defined as hoverable.
       $('a.menu-attach-block-drop-link.expand-on-hover', context).hover(
@@ -37,7 +37,7 @@
         if (link.hasClass('menu-ajax-enabled')) {
           // Load contents using AJAX.
           if (!link.hasClass('menu-ajax-loaded')) {
-            ajax_path = Drupal.settings.basePath + 'menu_attach_block/ajax/' + (link).attr('data-block-id');
+            ajax_path = Backdrop.settings.basePath + 'menu_attach_block/ajax/' + (link).attr('data-block-id');
             $.ajax({
               type: 'GET',
               url: ajax_path,
@@ -45,7 +45,7 @@
               dataType: 'HTML',
               success: function ($block_html) {
                 $(link).next('.menu-attach-block-wrapper').html($block_html);
-                Drupal.attachBehaviors(link);
+                Backdrop.attachBehaviors(link);
               }
             });
           }
