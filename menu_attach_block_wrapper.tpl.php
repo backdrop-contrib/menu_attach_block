@@ -21,6 +21,6 @@
  * @ingroup themeable
  */
 ?>
-<div class="<?php print $classes[0] . ' ' . $classes_array[0];?>">
+<li><div class="<?php print $classes[0] . ' ' . $classes_array[0];?>">
 	<?php print $content; ?>
-</div>
+</div></li>
