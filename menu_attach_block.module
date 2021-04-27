@@ -354,7 +354,6 @@ function menu_attach_block_preprocess_site_map_menu_link(&$variables) {
 }
 
 function menu_attach_block_menu_link(array $variables) {
-
   if ($variables['element']['#href'] != '<block>') {
     // Render link using the original theme function.
     return theme('menu_attach_block_link_default', $variables);
@@ -373,7 +372,7 @@ function menu_attach_block_menu_link(array $variables) {
     $block_loaded = menu_attach_block_get_content($block);
   }
   else {
-    $block_loaded = '<span class="ajax-progress"><span class="throbber"></span></span>';
+    $block_loaded['content'] = '<span class="ajax-progress"><span class="throbber"></span></span>';
   }
   $build = array();
   $build = [
