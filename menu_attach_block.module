@@ -354,6 +354,7 @@ function menu_attach_block_preprocess_site_map_menu_link(&$variables) {
 }
 
 function menu_attach_block_menu_link(array $variables) {
+  #sdpm($variables);
   if ($variables['element']['#href'] != '<block>') {
     // Render link using the original theme function.
     return theme('menu_attach_block_link_default', $variables);
